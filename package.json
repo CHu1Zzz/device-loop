@@ -1,0 +1,43 @@
+{
+  "name": "second-hand-device",
+  "version": "1.0.0",
+  "description": "二手餐饮设备信息聚合平台 - 自动采集闲鱼、小红书、百度贴吧等平台的二手餐饮设备转让信息",
+  "main": "api/server.js",
+  "type": "module",
+  "scripts": {
+    "collect": "node collector/index.js",
+    "collect:xianyu": "node collector/index.js --source xianyu",
+    "collect:xiaohongshu": "node collector/index.js --source xiaohongshu",
+    "collect:tieba": "node collector/index.js --source tieba",
+    "process": "node processor/index.js",
+    "process:date": "node processor/index.js --date",
+    "start": "node api/server.js",
+    "dev": "node --watch api/server.js",
+    "init:db": "node scripts/init-db.js",
+    "scheduler": "node scheduler/index.js",
+    "doctor": "opencli doctor",
+    "filter:content": "node scripts/filter-content.js",
+    "filter:report": "node scripts/filter-content.js --report"
+  },
+  "keywords": [
+    "second-hand",
+    "restaurant-equipment",
+    "aggregator",
+    "xianyu",
+    "xiaohongshu"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.7",
+    "sql.js": "^1.10.2",
+    "chalk": "^5.3.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2",
+    "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "vite": "^5.1.4"
+  }
+}
