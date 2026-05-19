@@ -34,8 +34,15 @@ export default function Home() {
     setLoading(true);
     try {
       const res = await fetchItems(filters);
+      const pagination = res.data.pagination || { page: 1, limit: 20, total: 0, total_pages: 0 };
+      // 兼容 limit/page_size 字段名差异
+      setPagination({
+        page: pagination.page,
+        limit: pagination.limit || pagination.page_size,
+        total: pagination.total,
+        total_pages: pagination.total_pages,
+      });
       setItems(res.data.items || []);
-      setPagination(res.data.pagination || { page: 1, limit: 20, total: 0, total_pages: 0 });
     } catch (err) {
       console.error('加载数据失败:', err);
     } finally {

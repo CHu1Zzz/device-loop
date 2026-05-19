@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Architecture</title>
+</head>
+<body style="font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background: #f9fafb;">
+
+<h2>System Architecture: Second-hand Catering Equipment Intel Platform</h2>
+<p class="subtitle">Optimized data flow and module relationships</p>
+
+<div style="display: flex; flex-direction: column; gap: 24px; margin-top: 20px;">
+
+<!-- Collection Layer -->
+<div style="border: 2px solid #3b82f6; border-radius: 12px; padding: 16px; background: #eff6ff;">
+  <div style="font-weight: bold; color: #1d4ed8; margin-bottom: 8px;">Collection Layer</div>
+  <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+    <div style="background: white; padding: 8px 16px; border-radius: 8px; border: 1px solid #bfdbfe;">
+      <strong>Keywords Config</strong><br/>
+      <small>Signal words + Equipment terms</small>
+    </div>
+    <div style="background: white; padding: 8px 16px; border-radius: 8px; border: 1px solid #bfdbfe;">Xianyu</div>
+    <div style="background: white; padding: 8px 16px; border-radius: 8px; border: 1px solid #bfdbfe;">Xiaohongshu</div>
+    <div style="background: white; padding: 8px 16px; border-radius: 8px; border: 1px solid #bfdbfe;">Tieba</div>
+  </div>
+</div>
+
+<!-- Arrow -->
+<div style="text-align: center; font-size: 24px; color: #6b7280;">&darr;</div>
+
+<!-- Processor Layer -->
+<div style="border: 2px solid #10b981; border-radius: 12px; padding: 16px; background: #ecfdf5;">
+  <div style="font-weight: bold; color: #047857; margin-bottom: 8px;">Processor Layer</div>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+    <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid #a7f3d0;">
+      <strong>Content Filter</strong><br/>
+      <small>Tutorial/Recycle/Repair/Request filter</small>
+    </div>
+    <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid #a7f3d0;">
+      <strong>Signal Scoring</strong><br/>
+      <small>Positive/Negative signals + weights</small>
+    </div>
+    <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid #a7f3d0;">
+      <strong>Intent Level</strong><br/>
+      <small>High/Med/Low intent</small>
+    </div>
+    <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid #a7f3d0;">
+      <strong>Tag Generation</strong><br/>
+      <small>Store-clearance / Urgent-transfer etc</small>
+    </div>
+    <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid #a7f3d0;">
+      <strong>Dedup + Storage</strong><br/>
+      <small>SQLite database persistence</small>
+    </div>
+  </div>
+</div>
+
+<!-- Arrow -->
+<div style="text-align: center; font-size: 24px; color: #6b7280;">&darr;</div>
+
+<!-- API Layer -->
+<div style="border: 2px solid #8b5cf6; border-radius: 12px; padding: 16px; background: #f5f3ff;">
+  <div style="font-weight: bold; color: #6d28d9; margin-bottom: 8px;">API Layer (Express :3000)</div>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">
+    <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid #ddd6fe;">
+      <strong>GET /items</strong><br/>
+      <small>List + Filter + Sort</small>
+    </div>
+    <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid #ddd6fe;">
+      <strong>GET /stats</strong><br/>
+      <small>Stats panel</small>
+    </div>
+    <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid #ddd6fe;">
+      <strong>PUT /items/:id</strong><br/>
+      <small>Update status</small>
+    </div>
+    <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid #ddd6fe;">
+      <strong>POST /feedback</strong><br/>
+      <small>Invalid reason</small>
+    </div>
+  </div>
+</div>
+
+<!-- Arrow -->
+<div style="text-align: center; font-size: 24px; color: #6b7280;">&darr;</div>
+
+<!-- Frontend Layer -->
+<div style="border: 2px solid #f59e0b; border-radius: 12px; padding: 16px; background: #fffbeb;">
+  <div style="font-weight: bold; color: #b45309; margin-bottom: 8px;">Frontend (React + Vite)</div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+    <div style="background: white; padding: 16px; border-radius: 8px; border: 1px solid #fde68a;">
+      <div style="font-weight: bold; margin-bottom: 8px;">List View</div>
+      <ul style="margin: 0; padding-left: 20px; font-size: 14px;">
+        <li>Side nav switching</li>
+        <li>Sort by signal score</li>
+        <li>Show matched tags</li>
+        <li>Quick contact/invalid buttons</li>
+      </ul>
+    </div>
+    <div style="background: white; padding: 16px; border-radius: 8px; border: 1px solid #fde68a;">
+      <div style="font-weight: bold; margin-bottom: 8px;">Kanban View</div>
+      <ul style="margin: 0; padding-left: 20px; font-size: 14px;">
+        <li>Columns: Pending/Contacted/Viewing</li>
+        <li>Card button operations</li>
+        <li>Status changes to DB</li>
+        <li>Invalid reason feedback</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div style="margin-top: 24px; padding: 12px; background: #f3f4f6; border-radius: 8px;">
+  <strong>Key Data Flow:</strong>
+  <span style="color: #6b7280;">Collect -> Signal Score(0-100) -> Tags -> Sorted Display -> User Action -> Feedback -> Rule Optimization</span>
+</div>
+
+</body>
+</html>

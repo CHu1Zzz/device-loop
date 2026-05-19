@@ -7,7 +7,8 @@
       "Bash(PORT=3001 node api/server.js)",
       "Bash(curl -s \"http://localhost:3001/api/health\")",
       "Bash(curl -s \"http://localhost:3001/api/items?page=1&page_size=2\")",
-      "Bash(curl -s \"http://localhost:3001/api/stats\")"
+      "Bash(curl -s \"http://localhost:3001/api/stats\")",
+      "Bash(node --check src/components/Sidebar.jsx)"
     ]
   }
 }

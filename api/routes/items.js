@@ -147,13 +147,18 @@ router.get('/', async (req, res) => {
         })
       : [];
 
+    const totalPages = Math.ceil(total / pageSize);
+
     res.json({
       code: 200,
       message: 'success',
       data: {
-        total,
-        page: pageNum,
-        page_size: pageSize,
+        pagination: {
+          page: pageNum,
+          page_size: pageSize,
+          total,
+          total_pages: totalPages,
+        },
         items,
       },
     });
