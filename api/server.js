@@ -9,6 +9,7 @@ import { rateLimit } from './middleware/rateLimit.js';
 import itemsRouter from './routes/items.js';
 import statsRouter from './routes/stats.js';
 import subscribeRouter from './routes/subscribe.js';
+import feedbackRouter from './routes/feedback.js';
 
 // 加载环境变量
 dotenv.config();
@@ -25,6 +26,7 @@ app.use(rateLimit);
 app.use('/api/items', itemsRouter);
 app.use('/api/stats', statsRouter);
 app.use('/api/subscribe', subscribeRouter);
+app.use('/api/feedback', feedbackRouter);
 
 // 健康检查接口
 app.get('/api/health', (req, res) => {

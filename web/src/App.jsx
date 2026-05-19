@@ -6,6 +6,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/kanban" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );

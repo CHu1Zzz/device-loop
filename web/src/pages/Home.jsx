@@ -5,6 +5,8 @@ import ItemCard from '../components/ItemCard';
 import StatsBanner from '../components/StatsBanner';
 import SubscribeModal from '../components/SubscribeModal';
 import Pagination from '../components/Pagination';
+import KanbanBoard from '../components/KanbanBoard';
+import Sidebar from '../components/Sidebar';
 import { fetchItems } from '../api/client';
 
 export default function Home() {
@@ -15,6 +17,7 @@ export default function Home() {
   const [subscribeItem, setSubscribeItem] = useState(null);
   const [showSubscribeModal, setShowSubscribeModal] = useState(false);
   const [stats, setStats] = useState(null);
+  const [currentView, setCurrentView] = useState('list');
 
   const getFiltersFromUrl = useCallback(() => ({
     keyword: searchParams.get('keyword') || '',
@@ -99,53 +102,69 @@ export default function Home() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-6 space-y-4">
-        <StatsBanner onStatsLoaded={handleStatsLoaded} />
-        <FilterBar onFilterChange={handleFilterChange} initialFilters={filters} />
-
-        {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="bg-industrial-mid rounded-lg overflow-hidden animate-pulse">
-                <div className="h-40 bg-industrial-dark"></div>
-                <div className="p-3 space-y-2">
-                  <div className="h-4 bg-industrial-dark rounded w-3/4"></div>
-                  <div className="h-4 bg-industrial-dark rounded w-1/2"></div>
-                  <div className="h-6 bg-industrial-dark rounded w-1/3"></div>
-                </div>
-              </div>
-            ))}
+        <div className="flex gap-4">
+          {/* 侧边导航 */}
+          <div className="w-48 flex-shrink-0">
+            <Sidebar currentView={currentView} onViewChange={setCurrentView} />
           </div>
-        ) : items.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="text-6xl mb-4">📭</div>
-            <div className="text-gray-400">暂无数据</div>
-            <button
-              onClick={() => loadItems(filters)}
-              className="mt-4 px-4 py-2 bg-accent text-white rounded hover:bg-accent-hover transition-colors"
-            >
-              刷新
-            </button>
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {items.map((item) => (
-                <ItemCard
-                  key={item.id}
-                  item={item}
-                  showSubscribe={handleSubscribeClick}
-                />
-              ))}
-            </div>
 
-            {pagination.total_pages > 1 && (
-              <Pagination
-                pagination={pagination}
-                onPageChange={handlePageChange}
-              />
+          {/* 主内容区 */}
+          <div className="flex-1">
+            {currentView === 'kanban' ? (
+              <KanbanBoard />
+            ) : (
+              <>
+                <StatsBanner onStatsLoaded={handleStatsLoaded} />
+                <FilterBar onFilterChange={handleFilterChange} initialFilters={filters} />
+
+                {loading ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {[...Array(8)].map((_, i) => (
+                      <div key={i} className="bg-industrial-mid rounded-lg overflow-hidden animate-pulse">
+                        <div className="h-40 bg-industrial-dark"></div>
+                        <div className="p-3 space-y-2">
+                          <div className="h-4 bg-industrial-dark rounded w-3/4"></div>
+                          <div className="h-4 bg-industrial-dark rounded w-1/2"></div>
+                          <div className="h-6 bg-industrial-dark rounded w-1/3"></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : items.length === 0 ? (
+                  <div className="text-center py-16">
+                    <div className="text-6xl mb-4">📭</div>
+                    <div className="text-gray-400">暂无数据</div>
+                    <button
+                      onClick={() => loadItems(filters)}
+                      className="mt-4 px-4 py-2 bg-accent text-white rounded hover:bg-accent-hover transition-colors"
+                    >
+                      刷新
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                      {items.map((item) => (
+                        <ItemCard
+                          key={item.id}
+                          item={item}
+                          showSubscribe={handleSubscribeClick}
+                        />
+                      ))}
+                    </div>
+
+                    {pagination.total_pages > 1 && (
+                      <Pagination
+                        pagination={pagination}
+                        onPageChange={handlePageChange}
+                      />
+                    )}
+                  </>
+                )}
+              </>
             )}
-          </>
-        )}
+          </div>
+        </div>
       </main>
 
       <footer className="bg-industrial-dark border-t border-industrial-light py-4 mt-8">

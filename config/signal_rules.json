@@ -1,0 +1,52 @@
+{
+  "positive_signals": [
+    { "keyword": "倒闭", "weight": 20, "category": "closure" },
+    { "keyword": "不干了", "weight": 20, "category": "closure" },
+    { "keyword": "急转", "weight": 15, "category": "urgency" },
+    { "keyword": "清仓", "weight": 18, "category": "clearance" },
+    { "keyword": "整店", "weight": 22, "category": "full_store" },
+    { "keyword": "整套", "weight": 18, "category": "full_set" },
+    { "keyword": "打包", "weight": 15, "category": "bundling" },
+    { "keyword": "设备清仓", "weight": 20, "category": "clearance" },
+    { "keyword": "饭店转让", "weight": 18, "category": "transfer" },
+    { "keyword": "桌椅处理", "weight": 12, "category": "furniture" },
+    { "keyword": "同城自提", "weight": 10, "category": "logistics" },
+    { "keyword": "搬迁处理", "weight": 15, "category": "relocation" },
+    { "keyword": "低价甩卖", "weight": 15, "category": "price" },
+    { "keyword": "餐厅倒闭", "weight": 20, "category": "closure" },
+    { "keyword": "后厨设备", "weight": 12, "category": "equipment" },
+    { "keyword": "店铺清仓", "weight": 18, "category": "clearance" }
+  ],
+  "negative_signals": [
+    { "keyword": "高价回收", "weight": -25, "category": "recycle" },
+    { "keyword": "上门回收", "weight": -20, "category": "recycle" },
+    { "keyword": "维修", "weight": -15, "category": "service" },
+    { "keyword": "安装", "weight": -10, "category": "service" },
+    { "keyword": "移机", "weight": -10, "category": "service" },
+    { "keyword": "培训", "weight": -20, "category": "tutorial" },
+    { "keyword": "教程", "weight": -25, "category": "tutorial" },
+    { "keyword": "配方", "weight": -20, "category": "tutorial" },
+    { "keyword": "网盘", "weight": -25, "category": "tutorial" },
+    { "keyword": "自动发货", "weight": -25, "category": "dropship" },
+    { "keyword": "工厂直销", "weight": -20, "category": "factory" },
+    { "keyword": "运损", "weight": -15, "category": "damage" },
+    { "keyword": "招商加盟", "weight": -20, "category": "franchise" },
+    { "keyword": "求购", "weight": -15, "category": "seeking" },
+    { "keyword": "谁有", "weight": -10, "category": "seeking" },
+    { "keyword": "哪里买", "weight": -10, "category": "seeking" },
+    { "keyword": "同行", "weight": -15, "category": "competitor" },
+    { "keyword": "家用", "weight": -10, "category": "home_use" }
+  ],
+  "combo_bonus": [
+    { "signals": ["倒闭", "整店"], "bonus": 15, "description": "闭店+整店打包" },
+    { "signals": ["倒闭", "整套"], "bonus": 12, "description": "闭店+整套设备" },
+    { "signals": ["急转", "打包"], "bonus": 10, "description": "急转+打包自提" },
+    { "signals": ["清仓", "低价甩卖"], "bonus": 8, "description": "清仓+低价" },
+    { "signals": ["饭店转让", "设备清仓"], "bonus": 15, "description": "转让+设备清仓" }
+  ],
+  "intent_thresholds": {
+    "high": { "min": 80, "label": "高意向" },
+    "medium": { "min": 50, "label": "中意向" },
+    "low": { "min": 0, "label": "低意向" }
+  }
+}

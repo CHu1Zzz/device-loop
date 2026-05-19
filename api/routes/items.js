@@ -79,10 +79,12 @@ router.get('/', async (req, res) => {
       params.push(`%${keyword}%`, `%${keyword}%`);
     }
 
-    // 排序
+    // 排序（支持 score_desc 用于按信号评分排序）
     let orderBy = 'ORDER BY collected_at DESC';
     if (sort === 'price_asc') orderBy = 'ORDER BY price ASC';
     if (sort === 'price_desc') orderBy = 'ORDER BY price DESC';
+    if (sort === 'time_desc') orderBy = 'ORDER BY collected_at DESC';
+    if (sort === 'score_desc') orderBy = 'ORDER BY score DESC';
 
     // 分页
     const pageNum = Math.max(1, parseInt(page));
@@ -94,8 +96,8 @@ router.get('/', async (req, res) => {
     const countResult = db.exec(countSql, params);
     const total = countResult.length > 0 ? countResult[0].values[0][0] : 0;
 
-    // 查询列表
-    const listSql = `
+    // 查询列表（兼容旧数据库，score/tags列可能不存在）
+    let listSql = `
       SELECT id, source, title, price, location, contact, url, images,
              category, keyword, collected_at, status
       FROM items
@@ -103,23 +105,46 @@ router.get('/', async (req, res) => {
       ${orderBy}
       LIMIT ? OFFSET ?
     `;
-    const listResult = db.exec(listSql, [...params, pageSize, offset]);
 
+    // 尝试带 score/tags 的查询（新版数据库）
+    let listResult;
+    try {
+      const newListSql = `
+        SELECT id, source, title, price, location, contact, url, images,
+               category, keyword, collected_at, status, score, tags
+        FROM items
+        ${where}
+        ${orderBy}
+        LIMIT ? OFFSET ?
+      `;
+      listResult = db.exec(newListSql, [...params, pageSize, offset]);
+    } catch (e) {
+      // 回退到旧查询（无score/tags列）
+      listResult = db.exec(listSql, [...params, pageSize, offset]);
+    }
+
+    // 映射数据（兼容新旧数据库结构）
     const items = listResult.length > 0
-      ? listResult[0].values.map(row => ({
-          id: row[0],
-          source: row[1],
-          title: row[2],
-          price: row[3],
-          location: row[4],
-          contact: row[5],
-          url: row[6],
-          images: row[7] ? JSON.parse(row[7]) : [],
-          category: row[8],
-          keyword: row[9],
-          collected_at: row[10],
-          status: row[11],
-        }))
+      ? listResult[0].values.map(row => {
+          // 新数据库有 score(12) 和 tags(13)
+          const hasNewCols = row.length > 12;
+          return {
+            id: row[0],
+            source: row[1],
+            title: row[2],
+            price: row[3],
+            location: row[4],
+            contact: row[5],
+            url: row[6],
+            images: row[7] ? JSON.parse(row[7]) : [],
+            category: row[8],
+            keyword: row[9],
+            collected_at: row[10],
+            status: row[11],
+            score: hasNewCols ? (row[12] || 50) : 50,
+            tags: hasNewCols && row[13] ? JSON.parse(row[13]) : [],
+          };
+        })
       : [];
 
     res.json({
@@ -191,6 +216,44 @@ router.get('/:id', async (req, res) => {
     });
   } catch (error) {
     console.error('查询详情失败:', error);
+    res.status(500).json({
+      code: 500,
+      message: '服务器内部错误',
+      data: null,
+    });
+  }
+});
+
+/**
+ * PUT /api/items/:id
+ * 更新线索状态
+ */
+router.put('/:id', async (req, res) => {
+  try {
+    const db = await getDb();
+    const { id } = req.params;
+    const { status } = req.body;
+
+    // 验证状态值
+    const validStatuses = ['active', 'pending', 'contacted', 'viewing', 'negotiating', 'completed', 'invalid'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({
+        code: 400,
+        message: '无效的状态值',
+        data: null,
+      });
+    }
+
+    const sql = `UPDATE items SET status = ? WHERE id = ?`;
+    db.exec(sql, [status, id]);
+
+    res.json({
+      code: 200,
+      message: 'success',
+      data: { id, status },
+    });
+  } catch (error) {
+    console.error('更新状态失败:', error);
     res.status(500).json({
       code: 500,
       message: '服务器内部错误',

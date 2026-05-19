@@ -27,6 +27,27 @@ const CATEGORY_COLORS = {
   '未分类': 'bg-gray-500',
 };
 
+// 意向等级颜色
+const INTENT_COLORS = {
+  high: 'bg-red-600',
+  medium: 'bg-yellow-600',
+  low: 'bg-gray-500',
+};
+
+// 标签颜色
+const TAG_COLORS = {
+  '整店清仓': 'bg-purple-600',
+  '单品急转': 'bg-orange-600',
+  '同行广告': 'bg-gray-600',
+  '服务维修': 'bg-blue-600',
+  '教程资料': 'bg-gray-500',
+  '疑似求购': 'bg-teal-600',
+  '同城自提': 'bg-green-600',
+  '可物流': 'bg-green-500',
+  '大件成套': 'bg-indigo-600',
+  '桌椅批量': 'bg-amber-600',
+};
+
 function formatPrice(price) {
   if (!price && price !== 0) return '价格面议';
   return `¥${Number(price).toLocaleString()}`;
@@ -163,6 +184,30 @@ export default function ItemCard({ item, showSubscribe }) {
             </span>
           )}
         </div>
+
+        {/* 分数和标签显示 */}
+        {item.score !== undefined && (
+          <div className="flex items-center gap-2 mb-2">
+            <span className={`${INTENT_COLORS[item.intent] || 'bg-gray-500'} text-white text-xs px-2 py-0.5 rounded font-bold`}>
+              {item.score}分
+            </span>
+            {item.tags && item.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1">
+                {item.tags.slice(0, 3).map((tag, idx) => (
+                  <span
+                    key={idx}
+                    className={`${TAG_COLORS[tag] || 'bg-gray-600'} text-white text-xs px-1.5 py-0.5 rounded`}
+                  >
+                    {tag}
+                  </span>
+                ))}
+                {item.tags.length > 3 && (
+                  <span className="text-gray-400 text-xs">+{item.tags.length - 3}</span>
+                )}
+              </div>
+            )}
+          </div>
+        )}
         <div className="flex items-center justify-between">
           <span className="text-accent font-bold text-lg">
             {formatPrice(item.price)}

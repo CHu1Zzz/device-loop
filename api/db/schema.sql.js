@@ -21,6 +21,9 @@ CREATE TABLE IF NOT EXISTS items (
   collected_at TEXT,
   created_at TEXT DEFAULT CURRENT_TIMESTAMP,
   status TEXT DEFAULT 'active',
+  invalid_reason TEXT,
+  score INTEGER DEFAULT 50,
+  tags TEXT,
   dedupe_key TEXT
 );
 
