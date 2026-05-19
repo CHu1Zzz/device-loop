@@ -21,6 +21,8 @@ yarn-error.log*
 # Database
 data/*.db
 data/*.db-journal
+data/errors/
+data/raw/
 
 # Editor
 .vscode/
@@ -35,3 +37,7 @@ Thumbs.db
 # Temporary files
 *.tmp
 .cache/
+.tmp/
+
+# Superpowers
+.superpowers/
