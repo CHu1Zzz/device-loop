@@ -27,7 +27,7 @@ export const EQUIPMENT_WORDS = [
 export const KEYWORDS = buildSearchKeywords();
 
 // 平台配置
-export const PLATFORMS = ['xianyu', 'xiaohongshu', 'tieba'];
+export const PLATFORMS = ['xianyu', 'xiaohongshu', 'tieba', 'douyin'];
 
 /**
  * 构建搜索关键词列表

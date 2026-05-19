@@ -1,7 +1,7 @@
 {
   "name": "second-hand-device",
   "version": "1.0.0",
-  "description": "二手餐饮设备信息聚合平台 - 自动采集闲鱼、小红书、百度贴吧等平台的二手餐饮设备转让信息",
+  "description": "二手餐饮设备情报平台 - 自动采集闲鱼、小红书、百度贴吧、抖音等平台的二手餐饮设备转让信息",
   "main": "api/server.js",
   "type": "module",
   "scripts": {
@@ -9,6 +9,7 @@
     "collect:xianyu": "node collector/index.js --source xianyu",
     "collect:xiaohongshu": "node collector/index.js --source xiaohongshu",
     "collect:tieba": "node collector/index.js --source tieba",
+    "collect:douyin": "node collector/index.js --source douyin",
     "process": "node processor/index.js",
     "process:date": "node processor/index.js --date",
     "start": "node api/server.js",
@@ -24,7 +25,8 @@
     "restaurant-equipment",
     "aggregator",
     "xianyu",
-    "xiaohongshu"
+    "xiaohongshu",
+    "douyin"
   ],
   "author": "",
   "license": "ISC",

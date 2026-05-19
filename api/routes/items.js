@@ -50,7 +50,7 @@ router.get('/', async (req, res) => {
 
     // 平台来源筛选
     if (source) {
-      const sources = source.split(',').filter(s => ['xianyu', 'xiaohongshu', 'tieba'].includes(s));
+      const sources = source.split(',').filter(s => ['xianyu', 'xiaohongshu', 'tieba', 'douyin'].includes(s));
       if (sources.length > 0) {
         where += ` AND source IN (${sources.map(() => '?').join(',')})`;
         params.push(...sources);

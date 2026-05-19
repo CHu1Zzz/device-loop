@@ -14,6 +14,7 @@ import { KEYWORDS, PLATFORMS } from './keywords.js';
 import { collectXianyu } from './platforms/xianyu.js';
 import { collectXiaohongshu } from './platforms/xiaohongshu.js';
 import { collectTieba } from './platforms/tieba.js';
+import { collectDouyin } from './platforms/douyin.js';
 
 // 命令行参数解析
 const args = process.argv.slice(2);
@@ -38,6 +39,7 @@ const collectors = {
   xianyu: collectXianyu,
   xiaohongshu: collectXiaohongshu,
   tieba: collectTieba,
+  douyin: collectDouyin,
 };
 
 // 平台中文名映射
@@ -45,6 +47,7 @@ const platformNames = {
   xianyu: '闲鱼',
   xiaohongshu: '小红书',
   tieba: '百度贴吧',
+  douyin: '抖音',
 };
 
 // 采集延迟（毫秒），避免触发风控
